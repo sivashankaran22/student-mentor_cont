@@ -7,9 +7,23 @@ const Mentor = () => {
 
     const {mentorde,setMentorde}=useContext(mentorDBS)
   
-    const deletementor = (mentorId)=>{
-      const removedMentor = mentorde.filter(mentor=>mentor.id !== mentorId);
-      setMentorde(removedMentor)
+    const deletementor = async(mentorId)=>{
+
+      try {
+        const res = await fetch(`https://batchstudent.onrender.com/api/mentordetails/:_id/${mentorId}`,{
+          method:"DELETE"
+        });
+        const mdata = await res.json()
+        console.log(mdata)
+  
+        if(mdata){
+          const removedMentor = mentorde.filter(mentor=>mentor.id !== mentorId);
+          setMentorde(removedMentor)
+        }
+      } catch (error) {
+        console.log(error);
+      }
+  
     }
     
     const navigate = useNavigate(); 

@@ -7,9 +7,22 @@ import { useNavigate } from 'react-router-dom'
 const Student = () => {
   const {studentde,setstudentde}=useContext(adminDBS)
   
-  const deleteStudent = (studentId)=>{
-    const removedStudent = studentde.filter(student=>student.id !== studentId);
-    setstudentde(removedStudent)
+  const deleteStudent = async (studentId)=>{
+
+    try {
+      const res = await fetch(`https://batchstudent.onrender.com/api/studentdetails/:_id/${studentId}`,{
+        method:"DELETE"
+      });
+      const sdata = await res.json()
+      console.log(sdata)
+
+      if(sdata){
+        const removedStudent = studentde.filter(student=>student.id !== studentId);
+        setstudentde(removedStudent)
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   
   const navigate = useNavigate(); 
